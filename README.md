@@ -96,6 +96,10 @@ A rule-based agent is implemented to simulate intelligent decision-making across
 * Reward shaping mechanism
 * Error-safe API
 * Clean reproducible outputs
+* Multi-step episodes (3-step horizon)
+* Action masking for valid actions
+* Deterministic runs via seed
+* Partial reward shaping for replies
 
 ---
 
