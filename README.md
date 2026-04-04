@@ -132,5 +132,4 @@ http://localhost:7860
 
 ## 👨‍💻 Author
 
-Annanya Bagga
-Sohini Dutta
+Annanya Bagga & Sohini Dutta
