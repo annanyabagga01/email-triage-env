@@ -9,25 +9,19 @@ def home():
     return {"message": "Email Triage Environment Running"}
 
 @app.get("/reset")
-def reset():
-    return env.reset()
+def reset(seed: int = None):
+    return env.reset(seed=seed)
 
 @app.post("/step")
 def step(action: dict):
-    try:
-        if "action_type" not in action or "value" not in action:
-            return {"error": "Invalid action format"}
+    if "action_type" not in action or "value" not in action:
+        return {"error": "Invalid action format"}
 
-        obs, reward, done, _ = env.step(action)
+    if action.get("action_type") not in ["classify","route","reply"]:
+        return {"error": "Invalid action type"}
 
-        return {
-            "observation": obs,
-            "reward": reward,
-            "done": done
-        }
-
-    except Exception as e:
-        return {"error": str(e)}
+    obs, reward, done, info = env.step(action)
+    return {"observation": obs, "reward": reward, "done": done, "info": info}
 
 @app.get("/state")
 def state():
