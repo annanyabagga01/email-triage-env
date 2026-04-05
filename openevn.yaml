@@ -1,5 +1,15 @@
 name: email-triage-env
 
+endpoints:
+  reset: /reset
+  step: /step
+  state: /state
+
+method:
+  reset: POST
+  step: POST
+  state: GET
+
 observation_space:
   email_text: string
   sender: string
