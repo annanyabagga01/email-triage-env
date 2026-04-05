@@ -9,13 +9,3 @@ method:
   reset: POST
   step: POST
   state: GET
-
-observation_space:
-  email_text: string
-  sender: string
-  subject: string
-  task_type: string
-
-action_space:
-  action_type: string
-  value: string
