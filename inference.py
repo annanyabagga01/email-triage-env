@@ -1,23 +1,47 @@
+import os
+from openai import OpenAI
 from env import EmailEnv
+
+# 🔥 USE PROXY (IMPORTANT)
+client = OpenAI(
+    base_url=os.environ["API_BASE_URL"],
+    api_key=os.environ["API_KEY"]
+)
 
 env = EmailEnv()
 obs = env.reset()
 
-print(f"[START] task={obs['task_type']} env=email model=heuristic")
+print(f"[START] task={obs['task_type']} env=email model=llm")
 
+# Create prompt
+prompt = f"""
+You are an email assistant.
+
+Email:
+{obs['email_text']}
+
+Task: {obs['task_type']}
+
+Respond with only the answer.
+"""
+
+# 🔥 LLM CALL (THIS FIXES ERROR)
+response = client.chat.completions.create(
+    model="gpt-3.5-turbo",
+    messages=[{"role": "user", "content": prompt}]
+)
+
+output = response.choices[0].message.content.strip().lower()
+
+# Map output to action
 if obs["task_type"] == "spam":
-    value = "spam" if "win" in obs["email_text"].lower() else "not spam"
-    action = {"action_type":"classify","value":value}
+    action = {"action_type": "classify", "value": "spam" if "spam" in output else "not spam"}
 
 elif obs["task_type"] == "routing":
-    value = "billing" if "payment" in obs["email_text"].lower() else "tech"
-    action = {"action_type":"route","value":value}
+    action = {"action_type": "route", "value": output}
 
 else:
-    action = {
-        "action_type":"reply",
-        "value":"Sorry, we will resolve your issue soon."
-    }
+    action = {"action_type": "reply", "value": output}
 
 obs, reward, done, _ = env.step(action)
 
