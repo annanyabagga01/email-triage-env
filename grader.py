@@ -1,7 +1,7 @@
 def grade(obs, action):
     task = obs.get("task_type")
 
-    # 🔥 SPAM TASK
+    #SPAM TASK
     if task == "spam":
         if action.get("action_type") != "classify":
             return 0.2
@@ -11,7 +11,7 @@ def grade(obs, action):
         else:
             return 0.3
 
-    # 🔥 ROUTING TASK
+    #ROUTING TASK
     if task == "routing":
         if action.get("action_type") != "route":
             return 0.2
@@ -21,7 +21,7 @@ def grade(obs, action):
         else:
             return 0.4
 
-    # 🔥 REPLY TASK
+    #REPLY TASK
     if task == "reply":
         if action.get("action_type") != "reply":
             return 0.2
